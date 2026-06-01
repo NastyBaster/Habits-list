@@ -5,16 +5,22 @@ import {
   format,
   isFuture,
   eachDayOfInterval,
+  isSameDay,
 } from 'date-fns';
 
-export type Habit = { id: string; name: string };
+export type Habit = { id: string; name: string; completions: Date[] };
 
 type HabitListProps = {
   habits: Habit[];
+  deleteHabit: (id: string) => void;
+  toggleHabit: (id: string, date: Date) => void;
 };
 
-export function HabitList({ habits }: HabitListProps ) {
-
+export function HabitList({
+  habits,
+  deleteHabit,
+  toggleHabit,
+}: HabitListProps) {
   if (habits.length === 0) {
     return (
       <p className="py-12 text-center text-zinc-500">
@@ -22,11 +28,13 @@ export function HabitList({ habits }: HabitListProps ) {
       </p>
     );
   }
-  
+
   return (
     <div className="flex flex-col gap-3">
       {habits.map((habit) => (
         <HabitItem
+          toggleHabit={toggleHabit}
+          deleteHabit={deleteHabit}
           key={habit.id}
           habit={habit}
         />
@@ -36,10 +44,12 @@ export function HabitList({ habits }: HabitListProps ) {
 }
 
 type HabitItemProps = {
-  habit: { id: string; name: string };
+  habit: Habit;
+  deleteHabit: (id: string) => void;
+  toggleHabit: (id: string, date: Date) => void;
 };
 
-function HabitItem({ habit }: HabitItemProps) {
+function HabitItem({ habit, deleteHabit, toggleHabit }: HabitItemProps) {
   const visibleDates = eachDayOfInterval({
     start: startOfWeek(new Date(), { weekStartsOn: 1 }),
     end: endOfWeek(new Date(), { weekStartsOn: 1 }),
@@ -53,6 +63,7 @@ function HabitItem({ habit }: HabitItemProps) {
           <span className="text-sm text-amber-400">🔥 3</span>
         </div>
         <Button
+          onClick={() => deleteHabit(habit.id)}
           variant="ghost-destructive"
           className="text-sm"
         >
@@ -65,6 +76,12 @@ function HabitItem({ habit }: HabitItemProps) {
             className="flex flex-1 flex-col items-center gap-0.5 rounded-lg text-xs"
             key={date.toISOString()}
             disabled={isFuture(date)}
+            onClick={() => toggleHabit(habit.id, date)}
+            variant={
+              habit.completions.some((d) => isSameDay(date, d))
+                ? 'primary'
+                : 'secondary'
+            }
           >
             <span className="font-medium">{format(date, 'EEE')}</span>
             <span>{format(date, 'd')}</span>

@@ -9,19 +9,10 @@ import {
   subDays,
 } from 'date-fns';
 
-export type Habit = { id: string; name: string; completions: Date[] };
+import { useHabits, type Habit } from '../context/useHabits';
 
-type HabitListProps = {
-  habits: Habit[];
-  deleteHabit: (id: string) => void;
-  toggleHabit: (id: string, date: Date) => void;
-};
-
-export function HabitList({
-  habits,
-  deleteHabit,
-  toggleHabit,
-}: HabitListProps) {
+export function HabitList() {
+  const { habits } = useHabits();
   if (habits.length === 0) {
     return (
       <p className="py-12 text-center text-zinc-500">
@@ -34,8 +25,6 @@ export function HabitList({
     <div className="flex flex-col gap-3">
       {habits.map((habit) => (
         <HabitItem
-          toggleHabit={toggleHabit}
-          deleteHabit={deleteHabit}
           key={habit.id}
           habit={habit}
         />
@@ -46,11 +35,11 @@ export function HabitList({
 
 type HabitItemProps = {
   habit: Habit;
-  deleteHabit: (id: string) => void;
-  toggleHabit: (id: string, date: Date) => void;
 };
 
-function HabitItem({ habit, deleteHabit, toggleHabit }: HabitItemProps) {
+function HabitItem({ habit }: HabitItemProps) {
+  const { deleteHabit, toggleHabit } = useHabits();
+
   const visibleDates = eachDayOfInterval({
     start: startOfWeek(new Date(), { weekStartsOn: 1 }),
     end: endOfWeek(new Date(), { weekStartsOn: 1 }),

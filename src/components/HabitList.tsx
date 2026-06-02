@@ -1,17 +1,13 @@
 import { Button } from './Button';
-import {
-  endOfWeek,
-  startOfWeek,
-  format,
-  isFuture,
-  eachDayOfInterval,
-  isSameDay,
-  subDays,
-} from 'date-fns';
+import { format, isFuture, isSameDay, subDays } from 'date-fns';
 
 import { useHabits, type Habit } from '../context/useHabits';
 
-export function HabitList() {
+type HabitListProps = {
+  visibleDates: Date[];
+};
+
+export function HabitList({ visibleDates }: HabitListProps) {
   const { habits } = useHabits();
   if (habits.length === 0) {
     return (
@@ -27,6 +23,7 @@ export function HabitList() {
         <HabitItem
           key={habit.id}
           habit={habit}
+          visibleDates={visibleDates}
         />
       ))}
     </div>
@@ -35,15 +32,12 @@ export function HabitList() {
 
 type HabitItemProps = {
   habit: Habit;
+  visibleDates: Date[];
 };
 
-function HabitItem({ habit }: HabitItemProps) {
+function HabitItem({ habit, visibleDates }: HabitItemProps) {
   const { deleteHabit, toggleHabit } = useHabits();
 
-  const visibleDates = eachDayOfInterval({
-    start: startOfWeek(new Date(), { weekStartsOn: 1 }),
-    end: endOfWeek(new Date(), { weekStartsOn: 1 }),
-  });
   const streak = getStreak(habit.completions);
 
   return (

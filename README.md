@@ -1,4 +1,4 @@
-# Habit Tracker App
+# [Habit Tracker App](https://nastybaster.github.io/Habits-list/)
 A lightweight, high-performance web application designed to help users build and sustain positive habits through custom tracking, persistence management, and streak calculations.
 
 ## Technical Stack and Dependencies

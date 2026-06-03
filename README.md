@@ -57,7 +57,7 @@ Every time code changes are successfully integrated into the production source c
 Local Deployment
 To initialize the development environment on your local system, run the following sequence of commands inside your terminal workspace:
 
-`
+```
 # Clone the project repository
 git clone https://github.com/NastyBaster/Habits-list.git
 
@@ -69,7 +69,7 @@ npm install
 
 # Launch the local development server
 npm run dev
-`
+```
 ## Build for Production
 To generate performance-optimized static distribution assets suitable for continuous delivery systems, run the following compile script:
 

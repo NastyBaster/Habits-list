@@ -17,7 +17,7 @@ export function Header({ visibleDates, onPrev, onNext }: HeaderProps) {
   const dateRange = `${format(visibleDates[0], 'MMM d')} - ${format(visibleDates.at(-1)!, 'MMM d')}`;
 
   return (
-    <header className="flex items-center justify-between">
+    <header className="flex items-center justify-between flex-wrap">
       <div className="flex flex-col gap-1">
         <h1 className="text-3xl font-bold">Habit Tracker</h1>
         <span className="text-sm text-zinc-400">

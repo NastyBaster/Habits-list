@@ -42,7 +42,7 @@ function HabitItem({ habit, visibleDates }: HabitItemProps) {
 
   return (
     <div className="flex flex-col gap-3 rounded-xl bg-zinc-800 p-4">
-      <div className="mb-3 flex items-center justify-between">
+      <div className="mb-3 flex flex-wrap items-center justify-between">
         <div className="flex items-center gap-3">
           <span className="font-medium">{habit.name}</span>
           {streak != 0 && (
@@ -57,7 +57,7 @@ function HabitItem({ habit, visibleDates }: HabitItemProps) {
           Delete
         </Button>
       </div>
-      <div className="flex gap-1.5">
+      <div className="flex flex-wrap gap-1.5">
         {visibleDates.map((date) => (
           <Button
             className="flex flex-1 flex-col items-center gap-0.5 rounded-lg text-xs"
@@ -82,6 +82,15 @@ function HabitItem({ habit, visibleDates }: HabitItemProps) {
 function getStreak(completion: Date[]) {
   let streak = 0;
   let date = new Date();
+  console.log(date);
+  const completedToday = completion.some((c) => isSameDay(c, date));
+  const completedYesterday = completion.some((c) =>
+    isSameDay(c, subDays(date, 1)),
+  );
+
+  if (!completedToday && completedYesterday) {
+    date = subDays(date, 1); // Починаємо рахувати стрік з учорашнього дня
+  }
 
   while (completion.some((c) => isSameDay(c, date))) {
     streak++;

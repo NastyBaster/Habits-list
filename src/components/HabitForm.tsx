@@ -16,7 +16,7 @@ export function HabitForm() {
 
   return (
     <form
-      className="flex gap-2"
+      className="flex gap-2 flex-wrap"
       onSubmit={handleSubmit}
     >
       <input
